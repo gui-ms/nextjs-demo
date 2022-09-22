@@ -7,7 +7,7 @@ import Head from "next/head";
 function MeetupDetails(props) { 
 
 	return(
-	<Fragment>
+		<Fragment>
 			<Head>
 				<title>{props.meetupData.title}</title>
 				<meta
@@ -16,17 +16,17 @@ function MeetupDetails(props) {
 				/>
 			</Head>
 			<MeetupDetail
-		image={props.meetupData.image}
-		address={props.meetupData.address}
-		title={props.meetupData.title}
-		description={props.meetupData.description}
-	/>
-	</Fragment>)
+				image={props.meetupData.image}
+				address={props.meetupData.address}
+				title={props.meetupData.title}
+				description={props.meetupData.description}
+			/>
+		</Fragment>)
 	
 }
 
 export async function getStaticPaths() {
-	MongoClient.connect();
+	
 	const client = await MongoClient.connect('mongodb+srv://GuilhermeMartins:u4TxVuajIHGCHhBG@cluster0.nkwtyuw.mongodb.net/meetupsDB?retryWrites=true&w=majority');
 
 	const meetupsDB = client.db();
@@ -38,7 +38,7 @@ export async function getStaticPaths() {
 	client.close();
 
 	return {
-		fallback:false,
+		fallback:'blocking',
 		paths: meetups.map(meetup => ({
 			params: { meetupId: meetup._id.toString() }
 		})),
@@ -49,7 +49,6 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
 	const meetupId = context.params.meetupId;
 
-	MongoClient.connect();
 	const client = await MongoClient.connect('mongodb+srv://GuilhermeMartins:u4TxVuajIHGCHhBG@cluster0.nkwtyuw.mongodb.net/meetupsDB?retryWrites=true&w=majority');
 
 	const meetupsDB = client.db();
@@ -68,13 +67,13 @@ export async function getStaticProps(context) {
 				description: selectedMeetup.description,
 				image: selectedMeetup.image,
 				address: selectedMeetup.address
-			}
+			},
 		},
 		// unlocks incremental static generation
 		// used in websites that has a lot of requests
 		// regenerates data after every n seconds defined below
 		// (if there are requests for data)
-		revalidate: 10 }
+	};
 }
 
 export default MeetupDetails;

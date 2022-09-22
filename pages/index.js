@@ -12,6 +12,10 @@ function HomePage(props) {
 		<Fragment>
 			<Head>
 				<title>React Meetups</title>
+				<meta
+					name='description'
+					content='Browse a list of react meetups'
+				/>
 			</Head>
 			<MeetupList meetups={props.meetups} />
 		</Fragment>
@@ -31,7 +35,7 @@ function HomePage(props) {
 }; */
 
 export async function getStaticProps() {
-	MongoClient.connect();
+	
 	const client = await MongoClient.connect('mongodb+srv://GuilhermeMartins:u4TxVuajIHGCHhBG@cluster0.nkwtyuw.mongodb.net/meetupsDB?retryWrites=true&w=majority');
 
 	const meetupsDB = client.db();
@@ -44,7 +48,7 @@ export async function getStaticProps() {
 
 	return {
 		props: {
-			meetups: meetups.map(meetup => ({
+			meetups: meetups.map((meetup) => ({
 				title: meetup.title,
 				address: meetup.address,
 				image: meetup.image,
@@ -55,7 +59,7 @@ export async function getStaticProps() {
 		// used in websites that has a lot of requests
 		// regenerates data after every n seconds defined below
 		// (if there are requests for data)
-		revalidate: 10 }
+		revalidate: 1 }
 }
 
 export default HomePage;
