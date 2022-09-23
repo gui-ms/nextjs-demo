@@ -22,17 +22,6 @@ function HomePage(props) {
 	)
 }
 
-// Alternative to getStaticProps
-// Runs for every incoming request
-/* export async function getServerSideProps(context) {
-	const req = context.req;
-	const res = context.res;
-	return {
-		props: {
-			meetups: DUMMY_MEETUPS
-		}
-	}
-}; */
 
 export async function getStaticProps() {
 	
@@ -55,10 +44,6 @@ export async function getStaticProps() {
 				id: meetup._id.toString()
 			}))
 		},
-		// unlocks incremental static generation
-		// used in websites that has a lot of requests
-		// regenerates data after every n seconds defined below
-		// (if there are requests for data)
 		revalidate: 1 }
 }
 
